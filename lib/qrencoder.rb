@@ -3,7 +3,7 @@ require 'inline'
 require 'png'
 
 class QRCode
-  GEM_VERSION = '1.0.0'
+  GEM_VERSION = '1.0.1'
   
   # Encoding modes
   QR_MODE_NUM = 0

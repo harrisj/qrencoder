@@ -1,3 +1,8 @@
+== 1.0.1 / 2008-03-11
+
+* 1 Minor enhancement
+  * Updated to using Hoe's new rakefile format
+
 == 1.0.0 / 2007-01-03
 
 * Initial release
