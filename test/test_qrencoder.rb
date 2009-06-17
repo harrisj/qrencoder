@@ -5,33 +5,8 @@ require 'test/unit' unless defined? $ZENTEST and $ZENTEST
 require './lib/qrencoder.rb'
 
 class TestQRCode < Test::Unit::TestCase
-  inline do |builder|
-    builder.add_link_flags "-lqrencode"
-    builder.include '"qrencode.h"'
-  
-    builder.c <<-"END"
-      VALUE test_img_data(const char *string, int version) {
-        QRcode *code;
-        VALUE out;
-        int i, width;
-        unsigned char *p;
-        
-        code = QRcode_encodeString(string, version, QR_ECLEVEL_L, QR_MODE_8);
-        
-        p = code->data;
-        width = code->width;
-    		out = rb_ary_new2(width*width);
-        
-    		for (i=0; i < width*width; i++) {
-            unsigned char bit;
-    				bit = *p;
-    				rb_ary_push(out, INT2FIX(bit));
-    				p++;
-    		}
-
-    		return out;      	
-      }
-    END
+  def test_img_data(string, version)
+    QRCode.encode_string(string, version).data
   end
   
   def setup

@@ -7,8 +7,8 @@ class QRCode
   
   # Encoding modes
   QR_MODE_NUM = 0
-	QR_MODE_AN = 1			
-	QR_MODE_8 = 2			
+	QR_MODE_AN = 1
+	QR_MODE_8 = 2
 	QR_MODE_KANJI	= 3 
 	
 	# Error correction
@@ -61,10 +61,10 @@ class QRCode
     
   ##
   # Encodes a QR code from a string. This version of the method assumes the 
-  # input data is 8-bit ASCII and that you want the most basic error correction.
-  # For more detailed control over those parameters, use #encode_string_ex. This
-  # method takes 2 arguments: a string to encode and a QRCode <tt>version</tt>
-  # which essentially determines the size of the QRCode. 
+  # input data is 8-bit ASCII, case sensitive, and that you want the most basic error
+  # correction. For more detailed control over those parameters, use
+  # #encode_string_ex. This method takes 2 arguments: a string to encode and a QRCode
+  # <tt>version</tt> which essentially determines the size of the QRCode.
   #
   # What is the version? Each QRCode is made up
   # of <b>modules</b> which are the basic display element of a QRCode and may
@@ -76,7 +76,7 @@ class QRCode
   # Should you encode more text than can fit in a module, the encoder will scale
   # up to the smallest version able to contain your data. Unless you want to 
   # specifically fix your barcode to a certain version, it's fine to just set
-  # the version argument to 1 and let #encode_string figure out the proper size.  
+  # the version argument to 1 and let #encode_string figure out the proper size.
   def encode_string; end;
   
   ##
@@ -115,7 +115,9 @@ class QRCode
 	# Note that the QR Code specification seemingly predates the rise and triumph
 	# of UTF-8, and the specification makes no requirement that writers and readers
 	# use ISO-8859-1 or UTF-8 or whatever to interpret the data in a barcode. If you
-	# encode in UTF-8, it might be read as ISO-8859-1 or not. 
+	# encode in UTF-8, it might be read as ISO-8859-1 or not.
+	#
+	# Finally, encoding can either be case sensitive (1) or not (0).
   def encode_string_ex; end;
   
   # now for the inlines
@@ -226,11 +228,11 @@ class QRCode
     END
     
     builder.c_singleton <<-"END"
-      VALUE encode_string_ex(const char *string, int version, int eclevel, int mode) {
+      VALUE encode_string_ex(const char *string, int version, int eclevel, int hint, int casesensitive) {
         QRcode *code;
         VALUE klass;
         
-        code = QRcode_encodeString(string, version, eclevel, mode);
+        code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
         klass = rb_const_get_at(rb_cObject, rb_intern("QRCode")); 
         return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
       }      
@@ -241,7 +243,7 @@ class QRCode
        QRcode *code;
        VALUE klass;
        
-       code = QRcode_encodeString(string, version, QR_ECLEVEL_L, QR_MODE_8);
+       code = QRcode_encodeString(string, version, QR_ECLEVEL_L, QR_MODE_8, 1);
        klass = rb_const_get_at(rb_cObject, rb_intern("QRCode")); 
        return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
      }
