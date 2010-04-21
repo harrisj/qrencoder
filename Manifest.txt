@@ -1,7 +1,0 @@
-History.txt
-Manifest.txt
-README.txt
-Rakefile
-bin/qrencoder
-lib/qrencoder.rb
-test/test_qrencoder.rb

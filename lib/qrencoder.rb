@@ -1,5 +1,4 @@
-require 'rubygems'
-require 'inline'
+require 'qrencoder_ext'
 require 'png'
 
 class QRCode
@@ -23,12 +22,12 @@ class QRCode
   # the version. Note that the version returned might be larger than the version
   # specified for an encode_string if the requested version is for a barcode too
   # small to encode the data.
-  def version; end;
+  # def version; end;
   
   ##
   # Width of the symbol in modules. This value usually corresponds to 1 module 
   # is 1 pixel, but you could conceivably scale it up if you wanted to.
-  def width; end;
+  # def width; end;
 
   ##
   # Returns the raw data of the QRcode within a single array of width*width
@@ -48,16 +47,16 @@ class QRCode
   # This structure allows the QRcode spec to store multiple types of information
   # within the allocated output buffers, but you usually only care about the pixel
   # color. For those cases, just use the #pixels or #points methods.
-  def data; end;
+  # def data; end;
   
   ##
   # Returns the QRcode as an array of rows where each item in a row represents
   # the value of the pixel (1=black, 0=white)
-  def pixels; end;
+  # def pixels; end;
 
   ##
   # Returns the black pixels of the encoded image as an array of coordinate pairs.
-  def points; end;
+  # def points; end;
     
   ##
   # Encodes a QR code from a string. This version of the method assumes the 
@@ -77,7 +76,7 @@ class QRCode
   # up to the smallest version able to contain your data. Unless you want to 
   # specifically fix your barcode to a certain version, it's fine to just set
   # the version argument to 1 and let #encode_string figure out the proper size.
-  def encode_string; end;
+  # def encode_string; end;
   
   ##
   # This function is similar in purpose to #encode_string, but it allows you to
@@ -118,150 +117,7 @@ class QRCode
 	# encode in UTF-8, it might be read as ISO-8859-1 or not.
 	#
 	# Finally, encoding can either be case sensitive (1) or not (0).
-  def encode_string_ex; end;
-  
-  # now for the inlines
-  inline do |builder|
-    builder.add_link_flags "-lqrencode"
-    builder.include '"qrencode.h"'
-
-    builder.prefix <<-"END"
-      static void qrcode_free(void *p) {
-        QRcode *qrcode = (QRcode *) p;
-        QRcode_free(qrcode);
-      }
-    END
-    
-    builder.c <<-"END"
-      int width() {
-        QRcode *qrcode;
-        Data_Get_Struct(self, QRcode, qrcode);
-        return qrcode->width;
-      }
-    END
-    
-    builder.c <<-"END"
-      int version() {
-        QRcode *qrcode;
-        Data_Get_Struct(self, QRcode, qrcode);
-        return qrcode->version;
-      }
-    END
-    
-    builder.c <<-"END"
-      VALUE data() {
-        QRcode *qrcode;
-        VALUE out;
-        unsigned char *p, b;
-        int i, max;
-        
-        Data_Get_Struct(self, QRcode, qrcode);
-        p = qrcode->data;
-        max = qrcode->width * qrcode->width;
-        out = rb_ary_new2(max);
-        
-        for (i=0; i < max; i++) {
-          b = *p;
-          rb_ary_push(out, INT2FIX(b));
-          p++;
-        }
-        
-        return out;
-      }
-    END
-    
-    builder.c <<-"END"
-      VALUE pixels() {
-        QRcode *qrcode;
-        VALUE out, row;
-        unsigned char *p;
-        int x, y, bit;
-                     
-        Data_Get_Struct(self, QRcode, qrcode);        
-      	p = qrcode->data;
-    		out = rb_ary_new2(qrcode->width);
-        
-    		for (y=0; y < qrcode->width; y++) {
-    			row = rb_ary_new2(qrcode->width);
-
-    			for (x=0; x < qrcode->width; x++) {
-    				bit = *p & 1;
-    				rb_ary_push(row, INT2FIX(bit));
-    				p++;
-    			}
-
-    			rb_ary_push(out, row);
-    		}
-    		
-    		return out;
-  		}
-    END
-        
-    builder.c <<-"END"
-      VALUE points() {
-        QRcode *qrcode;
-        VALUE out, point;
-        unsigned char *p;
-        int x, y, bit;
-
-        Data_Get_Struct(self, QRcode, qrcode);        
-      	p = qrcode->data;
-    		out = rb_ary_new2(qrcode->width);
-        
-        for (y=0; y < qrcode->width; y++) {
-        	for (x=0; x < qrcode->width; x++) {
-        		bit = *p & 1;
-
-        		if (bit) {
-        			point = rb_ary_new2(2);
-        			rb_ary_push(point, INT2FIX(x));
-        			rb_ary_push(point, INT2FIX(y));
-        			rb_ary_push(out, point);
-        		}
-
-        		p++;
-        	}	
-        }
-        
-        return out;     
-      }
-    END
-    
-    builder.c_singleton <<-"END"
-      VALUE encode_string_ex(const char *string, int version, int eclevel, int hint, int casesensitive) {
-        QRcode *code;
-        VALUE klass;
-        
-        code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
-        klass = rb_const_get_at(rb_cObject, rb_intern("QRCode")); 
-        return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
-      }      
-    END
-
-   builder.c_singleton <<-"END" 
-     VALUE encode_string(const char *string, int version) {
-       QRcode *code;
-       VALUE klass;
-       
-       code = QRcode_encodeString(string, version, QR_ECLEVEL_L, QR_MODE_8, 1);
-       klass = rb_const_get_at(rb_cObject, rb_intern("QRCode")); 
-       return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
-     }
-   END
-        
-#    builder.c <<-"END"
-#      VALUE encode_data_ex(const char *data, int len, int version, int eclevel, int mode) {
-#        QRcode *code;
-#        QRinput *input;
-#        
-#        input = QRinput_new();
-#        QRinput_append(input, mode, data, len);
-#        code = QRcode_encode(input, version, eclevel);
-#        Qrinput_free(input);
-#        return Data_Wrap_Struct(CLASS_OF(self), NULL, qrcode_free, code);        
-#      }
-#    END
-  end 
+  # def encode_string_ex; end;
   
   ##
   # Height of the symbol. Since QR Codes are square, this is the same as the 
