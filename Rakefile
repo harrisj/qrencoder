@@ -25,7 +25,9 @@ rescue LoadError
 end
 
 require 'rake/extensiontask'
-Rake::ExtensionTask.new('qrencoder_ext', jewel.gemspec)
+Rake::ExtensionTask.new('qrencoder_ext') do |ext|
+  ext.lib_dir = 'lib/qrencoder'
+end
 
 gem 'rspec', '=1.3.0'
 require 'spec/rake/spectask'
@@ -42,7 +44,7 @@ end
 
 task :spec => :check_dependencies
 
-task :default => :spec
+task :default => [:clean, :compile, :spec]
 
 require 'rake/rdoctask'
 Rake::RDocTask.new do |rdoc|

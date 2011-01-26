@@ -1,4 +1,4 @@
-require 'qrencoder_ext'
+require 'qrencoder/qrencoder_ext'
 require 'png'
 
 class QRCode
