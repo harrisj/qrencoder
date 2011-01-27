@@ -1,0 +1,6 @@
+Gemfile.lock
+*.bundle
+tmp/
+rdoc
+*.gem
+*.png
