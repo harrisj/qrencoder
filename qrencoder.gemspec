@@ -1,8 +1,10 @@
 lib = File.expand_path('../lib/', __FILE__)
 $:.unshift lib unless $:.include?(lib)
 
+require 'qrencoder/version'
+
 Gem::Specification.new do |s|
-  s.version = '0.1.0'
+  s.version = QRCode::VERSION
   s.platform = Gem::Platform::RUBY
 
   s.name = "qrencoder"
@@ -14,8 +16,8 @@ Gem::Specification.new do |s|
   s.authors = ['Jacob Harris', "Wesley Moore"]
   s.date     = '2010-11-23'
 
-  s.extra_rdoc_files = ["README.rdoc", "LICENSE"]
-  s.files = Dir.glob("{bin,lib}/**/*") + %w(LICENSE README.rdoc CHANGELOG.rdoc init.rb)
+  s.extra_rdoc_files = ["README.rdoc"]
+  s.files = Dir.glob("{bin,lib,ext}/**/*") + %w(History.txt README.rdoc)
 
   s.require_path = 'lib'
   s.required_rubygems_version = ">= 1.3.6"

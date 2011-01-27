@@ -1,9 +1,8 @@
+require 'qrencoder/version'
 require 'qrencoder/qrencoder_ext'
 require 'png'
 
 class QRCode
-  GEM_VERSION = '1.0.1'
-
   # Encoding modes
   QR_MODE_NUM = 0
   QR_MODE_AN = 1
