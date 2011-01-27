@@ -44,7 +44,7 @@ static VALUE _pixels(VALUE self) {
   unsigned char *p;
   int x, y, bit;
 
-  Data_Get_Struct(self, QRcode, qrcode);        
+  Data_Get_Struct(self, QRcode, qrcode);
   p = qrcode->data;
   out = rb_ary_new2(qrcode->width);
 
@@ -69,7 +69,7 @@ static VALUE _points(VALUE self) {
   unsigned char *p;
   int x, y, bit;
 
-  Data_Get_Struct(self, QRcode, qrcode);        
+  Data_Get_Struct(self, QRcode, qrcode);
   p = qrcode->data;
   out = rb_ary_new2(qrcode->width);
 
@@ -85,10 +85,10 @@ static VALUE _points(VALUE self) {
       }
 
       p++;
-    }	
+    }
   }
 
-  return out;     
+  return out;
 }
 
 static VALUE _encode_string_ex(VALUE self, VALUE _string, VALUE _version, VALUE _eclevel, VALUE _hint, VALUE _casesensitive) {
@@ -102,9 +102,9 @@ static VALUE _encode_string_ex(VALUE self, VALUE _string, VALUE _version, VALUE 
   VALUE klass;
 
   code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
-  klass = rb_const_get_at(rb_cObject, rb_intern("QRCode")); 
+  klass = rb_const_get_at(rb_cObject, rb_intern("QRCode"));
   return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
-}      
+}
 
 static VALUE _encode_string(VALUE self, VALUE _string, VALUE _version) {
   const char *string = StringValuePtr(_string);
@@ -114,7 +114,7 @@ static VALUE _encode_string(VALUE self, VALUE _string, VALUE _version) {
   VALUE klass;
 
   code = QRcode_encodeString(string, version, QR_ECLEVEL_L, QR_MODE_8, 1);
-  klass = rb_const_get_at(rb_cObject, rb_intern("QRCode")); 
+  klass = rb_const_get_at(rb_cObject, rb_intern("QRCode"));
   return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
 }
 

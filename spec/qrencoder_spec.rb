@@ -13,7 +13,7 @@ describe QRCode do
   it "should be a version 1 code" do
     @q.version.should == 1
   end
-  
+
   it "should be 21 modules wide" do
     @q.width.should == 21
   end
