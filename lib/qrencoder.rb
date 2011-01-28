@@ -30,11 +30,6 @@ module QREncoder
     QR_ECLEVEL_H = 3
 
     ##
-    # Height of the symbol. Since QR Codes are square, this is the same as the
-    # width but this alias is provided if you want to avoid confusion.
-    alias :height :width
-
-    ##
     # Save the QRcode to a PNG file. You can also specify a margin in pixels around
     # the image, although the specification requests it should be at least 4 px.
     def save_png(path, margin=4)

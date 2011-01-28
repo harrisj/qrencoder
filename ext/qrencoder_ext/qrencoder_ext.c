@@ -251,6 +251,8 @@ void Init_qrencoder_ext()
     rb_define_method(cQRCode, "pixels", _pixels, 0);
     rb_define_method(cQRCode, "points", _points, 0);
 
+    rb_define_alias(cQRCode, "height", "width");
+
     rb_define_singleton_method(cQRCode, "encode_string_ex", _encode_string_ex, 5);
     rb_define_singleton_method(cQRCode, "encode_string", _encode_string, 2);
 }
