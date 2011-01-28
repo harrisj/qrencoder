@@ -200,7 +200,8 @@ static VALUE _encode_string_ex(VALUE self, VALUE _string, VALUE _version, VALUE 
   VALUE klass;
 
   code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
-  klass = rb_const_get_at(rb_cObject, rb_intern("QRCode"));
+  VALUE mQREncoder =  rb_const_get_at(rb_cObject, rb_intern("QREncoder"));
+  klass = rb_const_get_at(mQREncoder, rb_intern("QRCode"));
   return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
 }
 
@@ -233,14 +234,16 @@ static VALUE _encode_string(VALUE self, VALUE _string, VALUE _version) {
   VALUE klass;
 
   code = QRcode_encodeString(string, version, QR_ECLEVEL_L, QR_MODE_8, 1);
-  klass = rb_const_get_at(rb_cObject, rb_intern("QRCode"));
+  VALUE mQREncoder =  rb_const_get_at(rb_cObject, rb_intern("QREncoder"));
+  klass = rb_const_get_at(mQREncoder, rb_intern("QRCode"));
   return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
 }
 
 /* :no-doc: */
 void Init_qrencoder_ext()
 {
-    VALUE cQRCode = rb_define_class("QRCode", rb_cObject);
+    VALUE mQREncoder = rb_define_module("QREncoder");
+    VALUE cQRCode = rb_define_class_under(mQREncoder, "QRCode", rb_cObject);
 
     rb_define_method(cQRCode, "width", _width, 0);
     rb_define_method(cQRCode, "version", _version, 0);

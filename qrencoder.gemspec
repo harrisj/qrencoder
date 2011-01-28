@@ -4,7 +4,7 @@ $:.unshift lib unless $:.include?(lib)
 require 'qrencoder/version'
 
 Gem::Specification.new do |s|
-  s.version = QRCode::VERSION
+  s.version = QREncoder::VERSION
   s.platform = Gem::Platform::RUBY
 
   s.name = "qrencoder"
