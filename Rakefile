@@ -10,11 +10,15 @@ RSpec::Core::RakeTask.new
 task :default => [:clean, :compile, :spec]
 
 require 'rake/rdoctask'
+require 'sdoc'
 Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
-
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "qrencoder #{version}"
-  rdoc.rdoc_files.include('README*')
+  rdoc.options << '--fmt' << 'shtml' # explictly set shtml generator
+  rdoc.template = 'direct' # lighter template used on railsapi.com
+
+  rdoc.title = "qrencoder"
+  rdoc.main = "README.rdoc"
+  rdoc.rdoc_files.include('README.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
+  rdoc.rdoc_files.include('ext/**/*.c')
 end
