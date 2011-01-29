@@ -3,6 +3,7 @@ require 'qrencoder/qrencoder_ext'
 require 'png'
 
 module QREncoder
+
   # Stores and represents data, points, and/or pixels for a QRCode
   class QRCode
     # Numeric-only encoding mode

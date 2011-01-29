@@ -1,7 +1,9 @@
 #include "qrencode.h"
 #include "ruby.h"
 
-/* :no-doc: */
+VALUE mQREncoder;
+VALUE cQRCode;
+
 static void qrcode_free(void *p) {
   QRcode *qrcode = (QRcode *) p;
   QRcode_free(qrcode);
@@ -196,13 +198,8 @@ static VALUE _encode_string_ex(VALUE self, VALUE _string, VALUE _version, VALUE 
   int hint = FIX2INT(_hint);
   int casesensitive = FIX2INT(_casesensitive);
 
-  QRcode *code;
-  VALUE klass;
-
-  code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
-  VALUE mQREncoder =  rb_const_get_at(rb_cObject, rb_intern("QREncoder"));
-  klass = rb_const_get_at(mQREncoder, rb_intern("QRCode"));
-  return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
+  QRcode *code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
+  return Data_Wrap_Struct(cQRCode, NULL, qrcode_free, code);
 }
 
 /*
@@ -230,20 +227,15 @@ static VALUE _encode_string(VALUE self, VALUE _string, VALUE _version) {
   const char *string = StringValuePtr(_string);
   int version = FIX2INT(_version);
 
-  QRcode *code;
-  VALUE klass;
+  QRcode *code = QRcode_encodeString(string, version, QR_ECLEVEL_L, QR_MODE_8, 1);
 
-  code = QRcode_encodeString(string, version, QR_ECLEVEL_L, QR_MODE_8, 1);
-  VALUE mQREncoder =  rb_const_get_at(rb_cObject, rb_intern("QREncoder"));
-  klass = rb_const_get_at(mQREncoder, rb_intern("QRCode"));
-  return Data_Wrap_Struct(klass, NULL, qrcode_free, code);
+  return Data_Wrap_Struct(cQRCode, NULL, qrcode_free, code);
 }
 
-/* :no-doc: */
 void Init_qrencoder_ext()
 {
-    VALUE mQREncoder = rb_define_module("QREncoder");
-    VALUE cQRCode = rb_define_class_under(mQREncoder, "QRCode", rb_cObject);
+    mQREncoder = rb_define_module("QREncoder");
+    cQRCode = rb_define_class_under(mQREncoder, "QRCode", rb_cObject);
 
     rb_define_method(cQRCode, "width", _width, 0);
     rb_define_method(cQRCode, "version", _version, 0);
