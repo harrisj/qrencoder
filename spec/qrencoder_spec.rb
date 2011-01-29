@@ -16,8 +16,8 @@ describe QREncoder do
       it "encodes using the specified version" do
         QREncoder::QRCode.should_receive(:encode_string_ex).with("string",
                                                                  2,
-                                                                 QREncoder::QRCode::QR_ECLEVEL_L,
-                                                                 QREncoder::QRCode::QR_MODE_8,
+                                                                 QREncoder::QR_ECLEVEL_L,
+                                                                 QREncoder::QR_MODE_8,
                                                                  0)
         subject
       end
@@ -30,8 +30,8 @@ describe QREncoder do
       it "encodes using the specified correction mode" do
         QREncoder::QRCode.should_receive(:encode_string_ex).with("string",
                                                                  1,
-                                                                 QREncoder::QRCode::QR_ECLEVEL_H,
-                                                                 QREncoder::QRCode::QR_MODE_8,
+                                                                 QREncoder::QR_ECLEVEL_H,
+                                                                 QREncoder::QR_MODE_8,
                                                                  0)
         subject
       end
@@ -44,8 +44,8 @@ describe QREncoder do
       it "encodes using the specified correction mode" do
         QREncoder::QRCode.should_receive(:encode_string_ex).with("string",
                                                                  1,
-                                                                 QREncoder::QRCode::QR_ECLEVEL_L,
-                                                                 QREncoder::QRCode::QR_MODE_AN,
+                                                                 QREncoder::QR_ECLEVEL_L,
+                                                                 QREncoder::QR_MODE_AN,
                                                                  0)
         subject
       end
@@ -58,8 +58,8 @@ describe QREncoder do
       it "encodes using the specified correction mode" do
         QREncoder::QRCode.should_receive(:encode_string_ex).with("string",
                                                                  1,
-                                                                 QREncoder::QRCode::QR_ECLEVEL_L,
-                                                                 QREncoder::QRCode::QR_MODE_8,
+                                                                 QREncoder::QR_ECLEVEL_L,
+                                                                 QREncoder::QR_MODE_8,
                                                                  1)
         subject
       end

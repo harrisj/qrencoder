@@ -3,30 +3,6 @@ require 'png'
 module QREncoder
   # Stores and represents data, points, and/or pixels for a QRCode
   class QRCode
-    # Numeric-only encoding mode
-    QR_MODE_NUM = 0
-
-    # Alphanumeric-only encoding mode
-    QR_MODE_AN = 1
-
-    # 8-bit ASCII encoding mode
-    QR_MODE_8 = 2
-
-    # Kanji encoding mode
-    QR_MODE_KANJI = 3
-
-    # Low error correction
-    QR_ECLEVEL_L = 0
-
-    # Medium error correction
-    QR_ECLEVEL_M = 1
-
-    # Medium-high error correction
-    QR_ECLEVEL_Q = 2
-
-    # High error correction
-    QR_ECLEVEL_H = 3
-
     ##
     # Save the QRcode to a PNG file. You can also specify a margin in pixels around
     # the image, although the specification requests it should be at least 4 px.
