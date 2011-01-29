@@ -18,11 +18,6 @@ describe QREncoder::QRCode do
     @q.width.should == 21
   end
 
-  it "should encode with options" do
-    pending
-    #raise NotImplementedError, 'Need to write test_class_encode_string_ex'
-  end
-
   it "should provide raw data" do
     @q.data.should == test_img_data("hi", 1)
   end
