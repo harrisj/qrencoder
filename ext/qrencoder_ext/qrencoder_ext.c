@@ -150,7 +150,7 @@ static VALUE _points(VALUE self) {
 
 /*
  * call-seq:
- *   encode_string_ex(string, version, eclevel, hint, case_sensitive = 0)
+ *   encode_string_ex(string, version, eclevel, mode, case_sensitive = 0)
 
  * This function is similar in purpose to +encode_string+, but it allows you to
  * explicitly specify the encoding and error correction level. There are 4
