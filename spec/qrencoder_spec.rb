@@ -18,7 +18,7 @@ describe QREncoder do
                                                                  2,
                                                                  QREncoder::QR_ECLEVEL_L,
                                                                  QREncoder::QR_MODE_8,
-                                                                 0)
+                                                                 1)
         subject
       end
     end
@@ -32,7 +32,7 @@ describe QREncoder do
                                                                  1,
                                                                  QREncoder::QR_ECLEVEL_H,
                                                                  QREncoder::QR_MODE_8,
-                                                                 0)
+                                                                 1)
         subject
       end
     end
@@ -46,13 +46,13 @@ describe QREncoder do
                                                                  1,
                                                                  QREncoder::QR_ECLEVEL_L,
                                                                  QREncoder::QR_MODE_AN,
-                                                                 0)
+                                                                 1)
         subject
       end
     end
 
     context "when passed a string and case_sensitive option" do
-      subject { QREncoder.encode("string", :case_sensitive => true) }
+      subject { QREncoder.encode("string", :case_sensitive => false) }
 
       it { should be_a_kind_of(QREncoder::QRCode) }
       it "encodes using the specified correction mode" do
@@ -60,7 +60,7 @@ describe QREncoder do
                                                                  1,
                                                                  QREncoder::QR_ECLEVEL_L,
                                                                  QREncoder::QR_MODE_8,
-                                                                 1)
+                                                                 0)
         subject
       end
     end
