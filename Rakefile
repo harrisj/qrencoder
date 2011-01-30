@@ -22,3 +22,37 @@ Rake::RDocTask.new do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
   rdoc.rdoc_files.include('ext/**/*.c')
 end
+
+desc "Benchmark C implementation against pure Ruby implementation (from rqrcode)"
+task(:benchmark => [:clean, :compile]) do
+  require 'rubygems'
+  require 'benchmark'
+  require 'bundler/setup'
+  Bundler.require(:benchmark)
+
+  require 'qrencoder'
+  require 'rqrcode'
+
+  Benchmark.bmbm do |benchmark|
+    num = 100
+
+    benchmark.report("rqrcode #{num}") do
+      num.times do |i|
+        RQRCode::QRCode.new("string #{i}").modules
+      end
+    end
+
+    benchmark.report("qrencoder #{num}") do
+      num.times do |i|
+        QREncoder.encode("string #{i}", :correction => :high).data
+      end
+    end
+
+    benchmark.report("qrencoder 100_000") do
+      100_000.times do |i|
+        QREncoder.encode("string #{i}", :correction => :high).data
+      end
+    end
+  end
+end
+
