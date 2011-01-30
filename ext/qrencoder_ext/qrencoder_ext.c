@@ -147,7 +147,7 @@ static VALUE _points(VALUE self) {
   return out;
 }
 
-/* Handle +clone+ and +dup+ */
+/* Handles +clone+ and +dup+ */
 static VALUE qr_init_copy(VALUE copy, VALUE orig) {
   QRcode *copy_qrcode;
   QRcode *orig_qrcode;
@@ -163,17 +163,19 @@ static VALUE qr_init_copy(VALUE copy, VALUE orig) {
 
 /*
  * call-seq:
- *   new(string, version, eclevel, mode, case_sensitive = 0)
+ *   new(string, version, eclevel, mode, case_sensitive)
  *
  * Encodes a QR code from a string.
  *
- * There are 5 arguments to this function:
+ * There are 5 required arguments:
  *
- * - <tt>string</tt> the string to encode
- * - <tt>version</tt> the version of the QR Code
- * - <tt>error correction level</tt>
- * - <tt>encoding mode</tt>
- * - <tt>case sensitivity</tt>
+ * [string] the string to encode
+ * [version] the version of the QR Code
+ * [error correction level] an integer representing an error correction level
+ * [encoding mode] an integer representing the encoding mode
+ * [case sensitivity] 1 (case sensitive) or 0 (case insensitive)
+ *
+ * == Version
  *
  * What is the version? Each QRCode is made up of <b>modules</b> which are the
  * basic display element of a QRCode and may be made up of 1 or more pixels
@@ -185,6 +187,8 @@ static VALUE qr_init_copy(VALUE copy, VALUE orig) {
  * up to the smallest version able to contain your data. Unless you want to
  * specifically fix your barcode to a certain version, it's fine to just set
  * the version argument to 1 and let the algorithm figure out the proper size.
+ *
+ * == Error correction
  *
  * The following four constants can be specified for error correction levels, each
  * specified with the maximum approximate error rate they can compensate for, as
@@ -199,10 +203,12 @@ static VALUE qr_init_copy(VALUE copy, VALUE orig) {
  * to be smudged or damaged, but as is apparent here, they can radically reduce
  * the maximum data capacity of a QR Code.
  *
- * There are also 4 possible encodings for a QR Code which can modify the
- * maximum data capacity. These are specified with four possible Constants, each
- * listed here with the maximum capacity available for that encoding at the lowest
- * error correction rate.
+ * == Encoding mode
+ *
+ * There are 4 possible encodings for a QR Code which can modify the maximum
+ * data capacity. These are specified with four possible Constants, each
+ * listed here with the maximum capacity available for that encoding at the
+ * lowest  error correction rate.
  *
  * - <tt>QR_MODE_NUM</tt> - Numeric/7089
  * - <tt>QR_MODE_AN</tt> - Alphanumeric/4296
@@ -210,11 +216,15 @@ static VALUE qr_init_copy(VALUE copy, VALUE orig) {
  * - <tt>QR_MODE_KANJI</tt>  - Kanji (JIS-1 & 2)/1817
  *
  * Note that the QR Code specification seemingly predates the rise and triumph
- * of UTF-8, and the specification makes no requirement that writers and readers
- * use ISO-8859-1 or UTF-8 or whatever to interpret the data in a barcode. If you
- * encode in UTF-8, it might be read as ISO-8859-1 or not.
+ * of UTF-8, and the specification makes no requirement that writers and
+ * readers use ISO-8859-1 or UTF-8 or whatever to interpret the data in a
+ * barcode. If you encode in UTF-8, it might be read as ISO-8859-1 or not.
  *
- * Finally, encoding can either be case sensitive (1) or not (0).
+ * == Case sensitivity
+ *
+ * Encoding can either be case sensitive (1) or not (0). Without case
+ * sensitivity turned on, many decoders will view all alphabetic characters as
+ * uppercase.
  */
 static VALUE qr_initialize(VALUE self, VALUE _string, VALUE _version, VALUE _eclevel, VALUE _hint, VALUE _casesensitive) {
   const char *string = StringValuePtr(_string);
