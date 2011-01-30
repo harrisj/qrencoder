@@ -1,58 +1,146 @@
 require 'spec_helper'
+require 'fixtures'
 
 describe QREncoder::QRCode do
 
-  def test_img_data(string, version)
-    QREncoder.encode(string, :version => version).data
-  end
-
-  before do
-    @q = QREncoder.encode("hi", :version => 1)
-  end
-
-  it "should be a version 1 code" do
-    @q.version.should == 1
-  end
-
-  it "should be 21 modules wide" do
-    @q.width.should == 21
-  end
-
-  it "should provide raw data" do
-    @q.data.should == test_img_data("hi", 1)
-  end
-
-  it "should have an equal height and width" do
-    @q.width.should == @q.height
-  end
-
-  it "should provide pixel data" do
-    arr = []
-    test_img_data("hi", 1).each_slice(@q.width) do |a|
-      arr << a.map { |p| p & 0x1 }
-    end
-
-    @q.pixels.should == arr
-  end
-
-  it "should provide point data" do
-    arr = []
-    y = 0
-
-    test_img_data("hi", 1).each_slice(@q.width) do |r|
-      x = 0;
-
-      r.each do |p|
-        if (p & 0x1) == 1
-          arr << [x, y]
-        end
-
-        x += 1
+  describe "#data" do
+    context "with default options and 'String'" do
+      subject { QREncoder.encode("String").data }
+      it { should be_kind_of(Array) }
+      it "generates the correct data array" do
+        subject.should == QREncoder::Fixtures::String1
       end
+    end
+    context "with version 4 and 'String'" do
+      subject { QREncoder.encode("String", :version => 4).data }
+      it { should be_kind_of(Array) }
+      it "generates the correct data array" do
+        subject.should == QREncoder::Fixtures::String4
+      end
+    end
+  end
 
-      y += 1
+  describe "#dup" do
+    subject { QREncoder.encode("something").dup }
+    its(:width) { should == 21 } 
+  end
+
+  describe "#width" do
+    subject { QREncoder.encode("something").width }
+    it { should == 21 } 
+  end
+
+  describe "#version" do
+
+    context "when not specified" do
+      subject { QREncoder.encode(string).version }
+      context "and string fits within version 1" do
+        let(:string) { "hello" }
+        it { should == 1 }
+      end
+      context "and string is too large for version 1" do
+        let(:string) { "hello" }
+        it { should == 1 }
+      end
     end
 
-    @q.points.should == arr
+    context "when specified" do
+      subject { QREncoder.encode(string, :version => 2).version }
+      context "and string fits within specified version" do
+        let(:string) { "hello" }
+        it { should == 2 }
+      end
+      context "and string is too large for specified version" do
+        let(:string) { "Lorem ipsum dolor et al and then some more content" }
+        it { should == 3 }
+      end
+    end
+
   end
+
+  describe "#width" do
+    subject { QREncoder.encode("test", :version => version).width }
+    context "with version 1" do
+      let(:version) { 1 }
+      it { should == 21 }
+    end
+    context "with version 2" do
+      let(:version) { 2 }
+      it { should == 25 }
+    end
+    context "with version 3" do
+      let(:version) { 3 }
+      it { should == 29 }
+    end
+    context "with version 4" do
+      let(:version) { 4 }
+      it { should == 33 }
+    end
+    context "with version 5" do
+      let(:version) { 5 }
+      it { should == 37 }
+    end
+    context "with version 6" do
+      let(:version) { 6 }
+      it { should == 41 }
+    end
+    context "with version 11" do
+      let(:version) { 11 }
+      it { should == 61 }
+    end
+    context "with version 15" do
+      let(:version) { 15 }
+      it { should == 77 }
+    end
+    context "with version 40 (the maximum)" do
+      let(:version) { 40 }
+      it { should == 177 }
+    end
+  end
+
+  describe "#height" do
+    subject { QREncoder.encode("test") }
+    it "should be the same as the width" do
+      subject.height.should == subject.width
+    end
+  end
+
+  describe "#pixels" do
+    let(:qrcode) { QREncoder.encode("hi") }
+    let(:pixels) do
+      arr = []
+      qrcode.data.each_slice(qrcode.width) do |a|
+        arr << a.map { |p| p & 0x1 }
+      end
+      arr
+    end
+
+    it "provides pixel data" do
+      qrcode.pixels.should == pixels
+    end
+  end
+
+  describe "#points" do
+    let(:qrcode) { QREncoder.encode("hi") }
+    let(:points) do
+      arr = []
+      y = 0
+      qrcode.data.each_slice(qrcode.width) do |r|
+        x = 0;
+        r.each do |p|
+          if (p & 0x1) == 1
+            arr << [x, y]
+          end
+          x += 1
+        end
+        y += 1
+      end
+      arr
+    end
+
+    it "provides point data" do
+      qrcode.points.should == points
+    end
+  end
+
 end

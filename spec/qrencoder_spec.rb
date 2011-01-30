@@ -15,10 +15,10 @@ describe QREncoder do
       it { should be_a_kind_of(QREncoder::QRCode) }
       it "encodes using the specified version" do
         QREncoder::QRCode.should_receive(:new).with("string",
-                                                                 2,
-                                                                 QREncoder::QR_ECLEVEL_L,
-                                                                 QREncoder::QR_MODE_8,
-                                                                 1)
+                                                    2,
+                                                    QREncoder::QR_ECLEVEL_L,
+                                                    QREncoder::QR_MODE_8,
+                                                    1)
         subject
       end
     end
@@ -29,10 +29,10 @@ describe QREncoder do
       it { should be_a_kind_of(QREncoder::QRCode) }
       it "encodes using the specified correction mode" do
         QREncoder::QRCode.should_receive(:new).with("string",
-                                                                 1,
-                                                                 QREncoder::QR_ECLEVEL_H,
-                                                                 QREncoder::QR_MODE_8,
-                                                                 1)
+                                                    1,
+                                                    QREncoder::QR_ECLEVEL_H,
+                                                    QREncoder::QR_MODE_8,
+                                                    1)
         subject
       end
     end
@@ -41,12 +41,12 @@ describe QREncoder do
       subject { QREncoder.encode("string", :mode => :alphanumeric) }
 
       it { should be_a_kind_of(QREncoder::QRCode) }
-      it "encodes using the specified correction mode" do
+      it "encodes using the specified mode" do
         QREncoder::QRCode.should_receive(:new).with("string",
-                                                                 1,
-                                                                 QREncoder::QR_ECLEVEL_L,
-                                                                 QREncoder::QR_MODE_AN,
-                                                                 1)
+                                                    1,
+                                                    QREncoder::QR_ECLEVEL_L,
+                                                    QREncoder::QR_MODE_AN,
+                                                    1)
         subject
       end
     end
@@ -55,12 +55,12 @@ describe QREncoder do
       subject { QREncoder.encode("string", :case_sensitive => false) }
 
       it { should be_a_kind_of(QREncoder::QRCode) }
-      it "encodes using the specified correction mode" do
+      it "encodes using the specified case sensitivity" do
         QREncoder::QRCode.should_receive(:new).with("string",
-                                                                 1,
-                                                                 QREncoder::QR_ECLEVEL_L,
-                                                                 QREncoder::QR_MODE_8,
-                                                                 0)
+                                                    1,
+                                                    QREncoder::QR_ECLEVEL_L,
+                                                    QREncoder::QR_MODE_8,
+                                                    0)
         subject
       end
     end
