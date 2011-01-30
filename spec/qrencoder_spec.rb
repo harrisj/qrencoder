@@ -14,7 +14,7 @@ describe QREncoder do
 
       it { should be_a_kind_of(QREncoder::QRCode) }
       it "encodes using the specified version" do
-        QREncoder::QRCode.should_receive(:encode_string_ex).with("string",
+        QREncoder::QRCode.should_receive(:new).with("string",
                                                                  2,
                                                                  QREncoder::QR_ECLEVEL_L,
                                                                  QREncoder::QR_MODE_8,
@@ -28,7 +28,7 @@ describe QREncoder do
 
       it { should be_a_kind_of(QREncoder::QRCode) }
       it "encodes using the specified correction mode" do
-        QREncoder::QRCode.should_receive(:encode_string_ex).with("string",
+        QREncoder::QRCode.should_receive(:new).with("string",
                                                                  1,
                                                                  QREncoder::QR_ECLEVEL_H,
                                                                  QREncoder::QR_MODE_8,
@@ -42,7 +42,7 @@ describe QREncoder do
 
       it { should be_a_kind_of(QREncoder::QRCode) }
       it "encodes using the specified correction mode" do
-        QREncoder::QRCode.should_receive(:encode_string_ex).with("string",
+        QREncoder::QRCode.should_receive(:new).with("string",
                                                                  1,
                                                                  QREncoder::QR_ECLEVEL_L,
                                                                  QREncoder::QR_MODE_AN,
@@ -56,7 +56,7 @@ describe QREncoder do
 
       it { should be_a_kind_of(QREncoder::QRCode) }
       it "encodes using the specified correction mode" do
-        QREncoder::QRCode.should_receive(:encode_string_ex).with("string",
+        QREncoder::QRCode.should_receive(:new).with("string",
                                                                  1,
                                                                  QREncoder::QR_ECLEVEL_L,
                                                                  QREncoder::QR_MODE_8,

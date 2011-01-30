@@ -147,21 +147,46 @@ static VALUE _points(VALUE self) {
   return out;
 }
 
+/* Handle +clone+ and +dup+ */
+static VALUE qr_init_copy(VALUE copy, VALUE orig) {
+  QRcode *copy_qrcode;
+  QRcode *orig_qrcode;
+  if (copy == orig)
+    return copy;
+
+  Data_Get_Struct(orig, QRcode, orig_qrcode);
+  Data_Get_Struct(copy, QRcode, copy_qrcode);
+  MEMCPY(copy_qrcode, orig_qrcode, QRcode, 1);
+
+  return copy;
+}
 
 /*
  * call-seq:
- *   encode_string_ex(string, version, eclevel, mode, case_sensitive = 0)
-
- * This function is similar in purpose to +encode_string+, but it allows you to
- * explicitly specify the encoding and error correction level. There are 4
- * arguments to this function:
+ *   new(string, version, eclevel, mode, case_sensitive = 0)
+ *
+ * Encodes a QR code from a string.
+ *
+ * There are 5 arguments to this function:
  *
  * - <tt>string</tt> the string to encode
- * - <tt>version</tt> the version of the QR Code (see +encode_string+ for explanation)
+ * - <tt>version</tt> the version of the QR Code
  * - <tt>error correction level</tt>
  * - <tt>encoding mode</tt>
+ * - <tt>case sensitivity</tt>
  *
- * The following four Constants can be specified for error correction levels, each
+ * What is the version? Each QRCode is made up of <b>modules</b> which are the
+ * basic display element of a QRCode and may be made up of 1 or more pixels
+ * (here, it's just 1 module is 1 pixel). Version 1 is a 21x21  module square,
+ * while the maximum version 40 is 177x177 modules.  The full module reference
+ * is here http://www.denso-wave.com/qrcode/vertable1-e.html
+ *
+ * Should you encode more text than can fit in a module, the encoder will scale
+ * up to the smallest version able to contain your data. Unless you want to
+ * specifically fix your barcode to a certain version, it's fine to just set
+ * the version argument to 1 and let the algorithm figure out the proper size.
+ *
+ * The following four constants can be specified for error correction levels, each
  * specified with the maximum approximate error rate they can compensate for, as
  * well as the maximum capacity of an 8-bit data QR Code with the error encoding:
  *
@@ -191,51 +216,35 @@ static VALUE _points(VALUE self) {
  *
  * Finally, encoding can either be case sensitive (1) or not (0).
  */
-static VALUE _encode_string_ex(VALUE self, VALUE _string, VALUE _version, VALUE _eclevel, VALUE _hint, VALUE _casesensitive) {
+static VALUE qr_initialize(VALUE self, VALUE _string, VALUE _version, VALUE _eclevel, VALUE _hint, VALUE _casesensitive) {
   const char *string = StringValuePtr(_string);
   int version = FIX2INT(_version);
   int eclevel = FIX2INT(_eclevel);
   int hint = FIX2INT(_hint);
   int casesensitive = FIX2INT(_casesensitive);
 
-  QRcode *code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
-  return Data_Wrap_Struct(cQRCode, NULL, qrcode_free, code);
+  QRcode *code;
+  code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
+
+  DATA_PTR(self) = code;
+  return self;
 }
 
-/*
- * call-seq:
- *   encode_string(string, version)
- *
- * Encodes a QR code from a string. This version of the method assumes the
- * input data is 8-bit ASCII, case sensitive, and that you want the most basic
- * error correction. For more detailed control over those parameters, use
- * +encode_string_ex+. This method takes 2 arguments: a string to encode and a
- * QRCode +version+ which essentially determines the size of the QRCode.
- *
- * What is the version? Each QRCode is made up of <b>modules</b> which are the
- * basic display element of a QRCode and may be made up of 1 or more pixels
- * (here, it's just 1 module is 1 pixel). Version 1 is a 21x21  module square,
- * while the maximum version 40 is 177x177 modules.  The full module reference
- * is here http://www.denso-wave.com/qrcode/vertable1-e.html
- *
- * Should you encode more text than can fit in a module, the encoder will scale
- * up to the smallest version able to contain your data. Unless you want to
- * specifically fix your barcode to a certain version, it's fine to just set
- * the version argument to 1 and let +encode_string+ figure out the proper size.
- */
-static VALUE _encode_string(VALUE self, VALUE _string, VALUE _version) {
-  const char *string = StringValuePtr(_string);
-  int version = FIX2INT(_version);
-
-  QRcode *code = QRcode_encodeString(string, version, QR_ECLEVEL_L, QR_MODE_8, 1);
-
-  return Data_Wrap_Struct(cQRCode, NULL, qrcode_free, code);
+/* Allocate memory */
+static VALUE qr_alloc(VALUE klass) {
+  QRcode *code;
+  VALUE obj = Data_Make_Struct(klass, QRcode, NULL, qrcode_free, code);
+  return obj;
 }
 
 void Init_qrencoder_ext()
 {
     mQREncoder = rb_define_module("QREncoder");
     cQRCode = rb_define_class_under(mQREncoder, "QRCode", rb_cObject);
+
+    rb_define_method(cQRCode, "initialize_copy", qr_init_copy, 1);
+    rb_define_method(cQRCode, "initialize", qr_initialize, 5);
+    rb_define_alloc_func(cQRCode, qr_alloc);
 
     rb_define_method(cQRCode, "width", _width, 0);
     rb_define_method(cQRCode, "version", _version, 0);
@@ -244,7 +253,4 @@ void Init_qrencoder_ext()
     rb_define_method(cQRCode, "points", _points, 0);
 
     rb_define_alias(cQRCode, "height", "width");
-
-    rb_define_singleton_method(cQRCode, "encode_string_ex", _encode_string_ex, 5);
-    rb_define_singleton_method(cQRCode, "encode_string", _encode_string, 2);
 }

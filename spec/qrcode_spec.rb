@@ -3,11 +3,11 @@ require 'spec_helper'
 describe QREncoder::QRCode do
 
   def test_img_data(string, version)
-    QREncoder::QRCode.encode_string(string, version).data
+    QREncoder.encode(string, :version => version).data
   end
 
   before do
-    @q = QREncoder::QRCode.encode_string("hi", 1)
+    @q = QREncoder.encode("hi", :version => 1)
   end
 
   it "should be a version 1 code" do

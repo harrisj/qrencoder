@@ -33,7 +33,7 @@ module QREncoder
     correction = corrections[options[:correction] || :low]
     mode = modes[options[:mode] || :ascii]
     case_sensitive = options[:case_sensitive] ? 1 : 0
-    QRCode.encode_string_ex(string, version, correction, mode, case_sensitive)
+    QRCode.new(string, version, correction, mode, case_sensitive)
   end
 
   def self.corrections
