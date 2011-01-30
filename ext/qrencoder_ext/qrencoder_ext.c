@@ -158,6 +158,9 @@ static VALUE qr_init_copy(VALUE copy, VALUE orig) {
   Data_Get_Struct(copy, QRcode, copy_qrcode);
   MEMCPY(copy_qrcode, orig_qrcode, QRcode, 1);
 
+  /* Code will be freed by original object */
+  RDATA(copy)->dfree = NULL;
+
   return copy;
 }
 
@@ -233,8 +236,12 @@ static VALUE qr_initialize(VALUE self, VALUE _string, VALUE _version, VALUE _ecl
   int hint = FIX2INT(_hint);
   int casesensitive = FIX2INT(_casesensitive);
 
-  QRcode *code;
-  code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
+  QRcode *code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
+
+  if (DATA_PTR(self)) {
+    QRcode_free(DATA_PTR(self));
+    DATA_PTR(self) = NULL;
+  }
 
   DATA_PTR(self) = code;
   return self;
