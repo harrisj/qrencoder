@@ -143,4 +143,62 @@ describe QREncoder::QRCode do
     end
   end
 
+  describe "#canvas" do
+    let(:qrcode) { QREncoder.encode("hi") }
+
+    it "returns an instance of PNG::Canvas" do
+      qrcode.canvas.should be_kind_of(PNG::Canvas)
+    end
+
+    context "with no options specified" do
+      subject { qrcode.canvas }
+      its(:width) { should == qrcode.width + (4 * 2) }
+      specify "background should be white" do
+        subject.data.first.first.should == PNG::Color::White
+      end
+    end
+
+    context "with margin option of 8" do
+      subject { qrcode.canvas(:margin => 8) }
+      its(:width) { should == qrcode.width + (8 * 2) }
+    end
+
+    context "with transparent set to true" do
+      subject { qrcode.canvas(:transparent => true) }
+      specify "background should be transparent" do
+        subject.data.first.first.should == PNG::Color::Background
+      end
+    end
+  end
+
+  describe "#png" do
+    let(:qrcode) { QREncoder.encode("hi") }
+
+    it "returns an instance of PNG" do
+      qrcode.png.should be_kind_of(PNG)
+    end
+
+    it "sends options to #canvas" do
+      canvas = PNG::Canvas.new(1,1)
+      options = { :margin => 5, :transparent => true }
+      qrcode.should_receive(:canvas).with(options).and_return(canvas)
+      qrcode.png(options)
+    end
+  end
+
+  describe "#save_png" do
+    let(:qrcode) { QREncoder.encode("hi") }
+    let(:path) do
+      File.expand_path("../../tmp/test.png", __FILE__)
+    end
+
+    before { File.unlink(path) if File.file?(path) }
+
+    it "saves a png image to path specified" do
+      qrcode.save_png(path)
+      File.open(path) { true }
+      File.size(path).should_not be_zero
+    end
+  end
+
 end
