@@ -4,3 +4,4 @@ tmp/
 rdoc
 *.gem
 *.png
+.rvmrc
