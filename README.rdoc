@@ -54,17 +54,28 @@ methods to save a PNG file directly.
 == REQUIREMENTS:
 
 This gem requires you to build the C library lib <tt>libqrcode.a</tt> available
-from http://megaui.net/fukuchi/works/qrencode/index.en.html. 
+from http://megaui.net/fukuchi/works/qrencode/index.en.html.
 
-Normally, the build process also expects you to install <tt>libpng</tt>, but
-this is only used for the <tt>qrenc</tt> command-line utility and can be avoided
-if you run the following build sequence:
+Installation is usually as simple as:
+
+curl http://fukuchi.org/works/qrencode/qrencode-3.1.1.tar.gz | tar xz
+cd qrencode-3.1.1
+./configure
+make
+sudo make install
+
+If if worked, you should be able to type <tt>qrencode</tt> and get a help
+message.
+
+Normally, the build process also expects you to have <tt>libpng</tt>, but
+this is only used for the <tt>qrenc</tt> command-line utility and can be
+avoided if you run the following build sequence:
 
   ./configure --without-tools
   make
   sudo make install
 
-This gem also requires the following gems to be installed:
+This gem also has the following gem dependencies:
 
 * ruby-inline
 * png
