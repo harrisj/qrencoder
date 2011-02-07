@@ -20,7 +20,7 @@ UPS labels) in North America; ShotCode in the UK; and an additional format used
 in Korea. All vary in look and capacity, but QR code has one of the largest
 information densities and capacities among them with the following maximum data
 
-* Numeric	7,089
+* Numeric 7,089
 * Alphanumeric 4,296
 * 8-Bit 2,953
 * Kanji 1,817
@@ -51,18 +51,24 @@ pass to <tt>QREncoder#encode</tt>.
 This gem requires you to build the C library lib <tt>libqrcode.a</tt> available
 from http://megaui.net/fukuchi/works/qrencode/index.en.html.
 
-Normally, the build process also expects you to install <tt>libpng</tt>, but
-this is only used for the <tt>qrenc</tt> command-line utility and can be avoided
-if you run the following build sequence:
+Installation is usually as simple as:
+
+curl http://fukuchi.org/works/qrencode/qrencode-3.1.1.tar.gz | tar xz
+cd qrencode-3.1.1
+./configure
+make
+sudo make install
+
+If if worked, you should be able to type <tt>qrencode</tt> and get a help
+message.
+
+Normally, the build process also expects you to have <tt>libpng</tt>, but
+this is only used for the <tt>qrenc</tt> command-line utility and can be
+avoided if you run the following build sequence:
 
   ./configure --without-tools
   make
   sudo make install
-
-This gem also requires the following gems to be installed:
-
-* ruby-inline
-* png
 
 == INSTALLATION:
 
