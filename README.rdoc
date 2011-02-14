@@ -31,7 +31,7 @@ multiple levels of error correction are possible which might also influence the
 final size.
 
 == FEATURES/PROBLEMS:
-  
+
 * This gem requires you to build and install an external C library
 * The QREncode lib this GEM is built around is NOT thread-safe!
 
@@ -54,7 +54,7 @@ methods to save a PNG file directly.
 == REQUIREMENTS:
 
 This gem requires you to build the C library lib <tt>libqrcode.a</tt> available
-from http://megaui.net/fukuchi/works/qrencode/index.en.html. 
+from http://megaui.net/fukuchi/works/qrencode/index.en.html.
 
 Normally, the build process also expects you to install <tt>libpng</tt>, but
 this is only used for the <tt>qrenc</tt> command-line utility and can be avoided
