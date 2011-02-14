@@ -30,26 +30,21 @@ All of these in a square that may range from 21 to 177 pixels a side (there are
 multiple levels of error correction are possible which might also influence the
 final size.
 
-== FEATURES/PROBLEMS:
+== USAGE:
 
-* This gem requires you to build and install an external C library
-* The QREncode lib this GEM is built around is NOT thread-safe!
+Basic usage is as follows:
 
-== SYNOPSIS:
+  text = "Some string"
+  qrcode = QREncoder.encode(text) #=> #<QREncoder::QRCode:0x1003710d0>
+  puts "#{qrcode.version}"  #=> 7
+  puts "#{qrcode.width}"    #=> 34
+  qrcode.save_png("/tmp/foo.png")
 
-There are 4 initialization methods for creating a QR code, two for strings, two
-for data. Both of these come in a simpler variant which take the string/data to
-be encoded. The second argument is a QR Code version (used to pick the size of
-the final QR Code); this version is adjusted upwards if the data is too large to
-fit within the specified version.
-
-  img = QRCode.encode_string(text, 1)
-  puts "#{img.version}"  #=> 7
-  puts "#{img.width}"    #=> 34
-  img.save_png("/tmp/foo.png")
-
-You can retrieve the pixels of the output image directly or use the included
+You can retrieve the pixels of the QRCode object directly or use the included
 methods to save a PNG file directly.
+
+See the rdocs[http://rdoc.info/github/harrisj/qrencoder] for options you can
+pass to <tt>QREncoder#encode</tt>.
 
 == REQUIREMENTS:
 
@@ -69,10 +64,30 @@ This gem also requires the following gems to be installed:
 * ruby-inline
 * png
 
-== INSTALL:
+== INSTALLATION:
 
 * First build the <tt>libqrencode</tt> library following the instructions above.
-* Then <tt>sudo gem install qrencoder --include-dependencies</tt>
+* Then <tt>[sudo] gem install qrencoder</tt>
+
+== DEVELOPMENT AND CONTRIBUTING:
+
+This project uses Bundler and its own gemspec for dependency management. To get
+started, just clone the repo and run:
+
+  gem install bundler
+  bundle install
+  rake
+
+The default Rake task will compile the C component and run the specs. If it
+fails to build, make sure that you have libqrencode installed properly.
+
+Please send pull requests. Topic branches are preferred. New features will not
+be accepted without corresponding tests.
+
+== FEATURES/PROBLEMS:
+
+* This gem requires you to build and install an external C library
+* The QREncode lib this GEM is built around is NOT thread-safe!
 
 == CONTRIBUTORS:
 
