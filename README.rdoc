@@ -74,6 +74,13 @@ This gem also requires the following gems to be installed:
 * First build the <tt>libqrencode</tt> library following the instructions above.
 * Then <tt>sudo gem install qrencoder --include-dependencies</tt>
 
+== CONTRIBUTORS:
+
+* Jacob Harris (harrisj)
+* Joshua Davey (jgdavey)
+* Joseph Holsten
+* Wesley Moore (wezm)
+
 == QRCODE LICENSE:
 
 The QR Code specification was created and patented by the Denso Corporation of
