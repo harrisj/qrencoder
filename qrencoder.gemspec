@@ -11,9 +11,9 @@ Gem::Specification.new do |s|
   s.summary = %Q{Wrapper around the C qrencode library for creating QR Codes}
   s.description = %Q{This Gem is a wrapper around an useful open-source library for creating QR
   Codes, a two-dimensional bar code format popular in Japan created by the Denso-Wave Corporation in 1994.}
-  s.email = 'harrisj@schizopolis.net'
+  s.email = ['harrisj@schizopolis.net', 'josh@joshuadavey.com']
   s.homepage = 'http://nycrb.rubyforge.org/qrencoder'
-  s.authors = ['Jacob Harris', "Wesley Moore"]
+  s.authors = ['Jacob Harris', 'Joshua Davey', 'Wesley Moore']
   s.date     = '2010-11-23'
 
   s.extra_rdoc_files = ["README.rdoc", "ext/qrencoder_ext/qrencoder_ext.c"]
