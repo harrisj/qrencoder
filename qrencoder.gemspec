@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.authors = ['Jacob Harris', 'Joshua Davey', 'Wesley Moore']
   s.date     = '2010-11-23'
 
+  s.extensions = ["ext/qrencoder_ext/extconf.rb"]
+
   s.extra_rdoc_files = ["README.rdoc", "ext/qrencoder_ext/qrencoder_ext.c"]
   s.files = Dir.glob("{bin,lib,ext}/**/*") + %w(History.txt README.rdoc)
 
