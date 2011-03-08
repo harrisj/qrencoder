@@ -1,4 +1,4 @@
-require 'png'
+require 'chunky_png'
 
 module QREncoder
   # Stores and represents data, points, and/or pixels for a QRCode
@@ -22,7 +22,7 @@ module QREncoder
     # [:transparent] Background transparency. Can be true or false. (default: +false+)
     #
     def png(options={})
-      PNG.new(canvas(options))
+      canvas(options)
     end
 
     ##
@@ -31,14 +31,14 @@ module QREncoder
     # Takes an optional hash of options. See QRCode#png for details.
     def canvas(options={})
       @margin = options[:margin] || 4
-      background = options[:transparent] ? PNG::Color::Background : PNG::Color::White
+      background = options[:transparent] ? ChunkyPNG::Color::TRANSPARENT : ChunkyPNG::Color::WHITE
       png_width = width + (2 * @margin)
 
-      canvas = PNG::Canvas.new(png_width, png_width, background)
+      canvas = ChunkyPNG::Image.new(png_width, png_width, background)
 
       points.each do |p|
         x, y = png_coordinates_for_point(p)
-        canvas[x,y] = PNG::Color::Black
+        canvas[x,y] = ChunkyPNG::Color::BLACK
       end
 
       canvas
@@ -47,7 +47,7 @@ module QREncoder
     private
     def png_coordinates_for_point(point)
       x = point[0] + @margin
-      y = width - 1 - point[1] + @margin
+      y = point[1] + @margin
       [x,y]
     end
   end

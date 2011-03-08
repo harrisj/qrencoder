@@ -146,15 +146,15 @@ describe QREncoder::QRCode do
   describe "#canvas" do
     let(:qrcode) { QREncoder.encode("hi") }
 
-    it "returns an instance of PNG::Canvas" do
-      qrcode.canvas.should be_kind_of(PNG::Canvas)
+    it "returns an instance of ChunkyPNG::Canvas" do
+      qrcode.canvas.should be_kind_of(ChunkyPNG::Canvas)
     end
 
     context "with no options specified" do
       subject { qrcode.canvas }
       its(:width) { should == qrcode.width + (4 * 2) }
       specify "background should be white" do
-        subject.data.first.first.should == PNG::Color::White
+        subject.get_pixel(1,1).should == ChunkyPNG::Color::WHITE
       end
     end
 
@@ -166,7 +166,7 @@ describe QREncoder::QRCode do
     context "with transparent set to true" do
       subject { qrcode.canvas(:transparent => true) }
       specify "background should be transparent" do
-        subject.data.first.first.should == PNG::Color::Background
+        subject.get_pixel(1,1).should == ChunkyPNG::Color::TRANSPARENT
       end
     end
   end
@@ -174,12 +174,12 @@ describe QREncoder::QRCode do
   describe "#png" do
     let(:qrcode) { QREncoder.encode("hi") }
 
-    it "returns an instance of PNG" do
-      qrcode.png.should be_kind_of(PNG)
+    it "returns an instance of ChunkyPNG" do
+      qrcode.png.should be_kind_of(ChunkyPNG::Image)
     end
 
     it "sends options to #canvas" do
-      canvas = PNG::Canvas.new(1,1)
+      canvas = ChunkyPNG::Canvas.new(1,1)
       options = { :margin => 5, :transparent => true }
       qrcode.should_receive(:canvas).with(options).and_return(canvas)
       qrcode.png(options)
