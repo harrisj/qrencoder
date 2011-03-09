@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.extensions = ["ext/qrencoder_ext/extconf.rb"]
 
   s.extra_rdoc_files = ["README.rdoc", "ext/qrencoder_ext/qrencoder_ext.c"]
-  s.files = Dir.glob("{bin,lib,ext}/**/*") + %w(History.txt README.rdoc)
+  s.files = Dir.glob("{bin,lib,ext}/**/*") + %w(History.txt README.rdoc) - ["lib/qrencoder/qrencoder_ext.bundle"]
 
   s.require_path = 'lib'
   s.required_rubygems_version = ">= 1.3.6"
