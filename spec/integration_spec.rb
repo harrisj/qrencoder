@@ -2,23 +2,36 @@ require 'spec_helper'
 require 'zxing'
 
 describe QREncoder do
-  context "full integration" do
-    shared_examples_for "decodable" do
-      let(:message) { 'a message' }
-      let(:path) do
-        File.expand_path("../../tmp/integration.png", __FILE__)
-      end
-      before { File.unlink(path) if File.file?(path) }
-      it "creates decodable QRCode png files" do
-        QREncoder.encode(message).save_png(path)
-        ZXing.decode(path).should == message
-      end
+  context "integration" do
+    let(:path) { File.expand_path("../../tmp/integration.png", __FILE__) }
+    let(:options) { Hash.new }
+    let(:png) { QREncoder.encode(message).png(options) }
+    before do
+      File.unlink(path) if File.file?(path)
+      png.save(path)
     end
-    it_should_behave_like "decodable" do
+
+    subject { ZXing.decode(path) }
+
+    context "with a sentence" do
       let(:message) {"Oh my! I'm amazed by technology."}
+      it { should == message }
     end
-    it_should_behave_like "decodable" do
+
+    context "with ascii characters" do
       let(:message) {"&*@ad!jlfj-=+"}
+      it { should == message }
+    end
+
+    context "with a custom pixel per module size" do
+      let(:message) { "bigger" }
+      let(:options) do
+        { :pixels_per_module => 4, :version => 1 }
+      end
+      it { should == message }
+      it "produces a larger png width and height" do
+        png.width.should == 29 * 4
+      end
     end
   end
 end

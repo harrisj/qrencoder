@@ -22,12 +22,12 @@ describe QREncoder::QRCode do
 
   describe "#dup" do
     subject { QREncoder.encode("something").dup }
-    its(:width) { should == 21 } 
+    its(:width) { should == 21 }
   end
 
   describe "#width" do
     subject { QREncoder.encode("something").width }
-    it { should == 21 } 
+    it { should == 21 }
   end
 
   describe "#version" do
@@ -158,9 +158,14 @@ describe QREncoder::QRCode do
       end
     end
 
-    context "with margin option of 8" do
+    context "with margin of 8" do
       subject { qrcode.canvas(:margin => 8) }
       its(:width) { should == qrcode.width + (8 * 2) }
+    end
+
+    context "with pixels-per-module of 2" do
+      subject { qrcode.canvas(:pixels_per_module => 2) }
+      its(:width) { should == (qrcode.width + 8) * 2 }
     end
 
     context "with transparent set to true" do
