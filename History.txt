@@ -1,3 +1,36 @@
+== 1.3.4 / 2011-03-08
+
+* 1 Minor enhancement
+  * Add pixels_per_module option for enlarging the PNG image by the
+    provided factor.
+
+== 1.3.3 / 2011-03-08
+
+* Fix bug with C extension location
+
+== 1.3.2 / 2011-03-08
+
+* Bugfix release. Gem erroneously included pre-compiled file.
+
+== 1.3.1 / 2011-03-08
+
+* Bugfix release
+
+== 1.3.0 / 2011-03-08
+
+* 1 Minor enhancement
+  * Use more maintain ChunkyPNG library instead of PNG
+
+== 1.2.0 / 2011-02-23
+
+* Major API change
+  * Everything is now wrapped in the QREncoder module
+  * QRCode.encode_string and QRCode.encode_string_ex are now handled
+    through a more conventional object initializer. See QRCode#initialize
+    for documentation.
+  * QREncoder includes a convenience method for creating QRCode objects.
+    See QREncoder.encode for details.
+
 == 1.0.1 / 2008-03-11
 
 * 1 Minor enhancement
@@ -7,4 +40,3 @@
 
 * Initial release
   * Wooo!
-
