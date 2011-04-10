@@ -179,14 +179,14 @@ describe QREncoder::QRCode do
   describe "#png" do
     let(:qrcode) { QREncoder.encode("hi") }
 
-    it "returns an instance of ChunkyPNG" do
-      qrcode.png.should be_kind_of(ChunkyPNG::Image)
+    it "returns an instance of QREncoder::PNG" do
+      qrcode.png.should be_kind_of(QREncoder::PNG)
     end
 
     it "sends options to #canvas" do
-      canvas = ChunkyPNG::Canvas.new(1,1)
+      canvas = QREncoder::PNG.new(qrcode)
       options = { :margin => 5, :transparent => true }
-      qrcode.should_receive(:canvas).with(options).and_return(canvas)
+      qrcode.should_receive(:png).with(options).and_return(canvas)
       qrcode.png(options)
     end
   end
@@ -194,7 +194,7 @@ describe QREncoder::QRCode do
   describe "#save_png" do
     let(:qrcode) { QREncoder.encode("hi") }
     let(:path) do
-      File.expand_path("../../tmp/test.png", __FILE__)
+      File.expand_path("../../../tmp/test.png", __FILE__)
     end
 
     before { File.unlink(path) if File.file?(path) }
