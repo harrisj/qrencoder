@@ -12,12 +12,12 @@ like the following:
 
 http://www.denso-wave.com/qrcode/images/qrcode.gif
 
-The specification for QR codes is readable at
+The specification for QR Code is readable at
 http://www.denso-wave.com/qrcode/index-e.html. QR Code is not the only 2-D
 barcode standard in existence, and it is in wider use in Japan than elsewhere.
 Notable competitors include PDF417, Semacode/DataMatrix, and Maxi Code (seen on
 UPS labels) in North America; ShotCode in the UK; and an additional format used
-in Korea. All vary in look and capacity, but QR code has one of the largest
+in Korea. All vary in look and capacity, but QR Code has one of the largest
 information densities and capacities among them with the following maximum data
 
 * Numeric 7,089
@@ -40,7 +40,7 @@ Basic usage is as follows:
   puts "#{qrcode.width}"    #=> 34
   qrcode.save_png("/tmp/foo.png")
 
-You can retrieve the pixels of the QRCode object directly or use the included
+You can retrieve the pixels of the QR Code object directly or use the included
 methods to save a PNG file directly.
 
 See the rdocs[http://rdoc.info/github/harrisj/qrencoder] for options you can
