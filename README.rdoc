@@ -59,7 +59,7 @@ Installation is usually as simple as:
   make
   sudo make install
 
-If if worked, you should be able to type <tt>qrencode</tt> and get a help
+If it worked, you should be able to type <tt>qrencode</tt> and get a help
 message.
 
 Normally, the build process also expects you to have <tt>libpng</tt>, but
