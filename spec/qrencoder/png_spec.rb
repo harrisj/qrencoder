@@ -97,7 +97,6 @@ describe QREncoder::PNG do
         png.should respond_to(:to_datastream)
       end
     end
-    :w
 
     context "when method exists on neither self or canvas" do
       it "returns false" do
