@@ -1,8 +1,11 @@
 #include "qrencode.h"
 #include "ruby.h"
+#include "errno.h"
+#include "string.h"
 
 VALUE mQREncoder;
 VALUE cQRCode;
+int errno;
 
 static void qrcode_free(void *p) {
   QRcode *qrcode = (QRcode *) p;
@@ -235,15 +238,16 @@ static VALUE qr_initialize(VALUE self, VALUE _string, VALUE _version, VALUE _ecl
   int eclevel = FIX2INT(_eclevel);
   int hint = FIX2INT(_hint);
   int casesensitive = FIX2INT(_casesensitive);
+  int error = errno;
   QRcode *code;
 
-  if (hint < 2) {
-    QRinput *input = QRinput_new2(version, eclevel);
-    QRinput_append(input, hint, strlen(string), string);
-    code = QRcode_encodeInput(input);
-    QRinput_free(input);
-  } else {
-    code = QRcode_encodeString(string, version, eclevel, hint, casesensitive);
+  QRinput *input = QRinput_new2(version, eclevel);
+  QRinput_append(input, hint, strlen(string), string);
+  code = QRcode_encodeInput(input);
+  QRinput_free(input);
+
+  if (errno != error && errno == 22) {
+    rb_raise(rb_eArgError, "input was too long");
   }
 
   if (DATA_PTR(self)) {

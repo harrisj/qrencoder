@@ -32,6 +32,7 @@ describe QREncoder do
       it { should == "A63B902F" }
     end
 
+
     context "with a custom pixel per module size" do
       let(:message) { "bigger" }
       let(:png_options) do
@@ -40,6 +41,17 @@ describe QREncoder do
       it { should == message }
       it "produces a larger png width and height" do
         png.width.should == 29 * 4
+      end
+    end
+  end
+
+  describe "encoding errors" do
+    context "with too-long input" do
+      let(:message) { "a" * 2960 }
+      it "raises an error" do
+        expect {
+          QREncoder.encode(message)
+        }.to raise_error(ArgumentError)
       end
     end
   end
