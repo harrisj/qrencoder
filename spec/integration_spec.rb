@@ -4,8 +4,9 @@ require 'zxing'
 describe QREncoder do
   context "integration" do
     let(:path) { File.expand_path("../../tmp/integration.png", __FILE__) }
-    let(:options) { Hash.new }
-    let(:png) { QREncoder.encode(message).png(options) }
+    let(:png_options) { Hash.new }
+    let(:encoding_options) { Hash.new }
+    let(:png) { QREncoder.encode(message, encoding_options).png(png_options) }
     before do
       File.unlink(path) if File.file?(path)
       png.save(path)
@@ -23,9 +24,17 @@ describe QREncoder do
       it { should == message }
     end
 
+    context "with alphanumeric characters" do
+      let(:message) { "A63b902f" }
+      let(:encoding_options) do
+        { :mode => :alphanumeric }
+      end
+      it { should == "A63B902F" }
+    end
+
     context "with a custom pixel per module size" do
       let(:message) { "bigger" }
-      let(:options) do
+      let(:png_options) do
         { :pixels_per_module => 4 }
       end
       it { should == message }

@@ -42,7 +42,7 @@ describe QREncoder do
 
       it { should be_a_kind_of(QREncoder::QRCode) }
       it "encodes using the specified mode" do
-        QREncoder::QRCode.should_receive(:new).with("string",
+        QREncoder::QRCode.should_receive(:new).with("STRING",
                                                     1,
                                                     QREncoder::QR_ECLEVEL_L,
                                                     QREncoder::QR_MODE_AN,
