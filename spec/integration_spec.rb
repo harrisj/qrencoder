@@ -26,7 +26,7 @@ describe QREncoder do
     context "with a custom pixel per module size" do
       let(:message) { "bigger" }
       let(:options) do
-        { :pixels_per_module => 4, :version => 1 }
+        { :pixels_per_module => 4 }
       end
       it { should == message }
       it "produces a larger png width and height" do
