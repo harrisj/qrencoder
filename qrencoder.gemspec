@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake-compiler", "~> 0.7.5"
   s.add_development_dependency "sdoc", "~> 0.2.20"
   s.add_development_dependency "zxing", "~> 0.2.1"
-  s.add_runtime_dependency "chunky_png", "~> 1.1.0"
+  s.add_runtime_dependency "chunky_png", "~> 1.1"
 
   s.test_files = Dir.glob("spec/**/*_spec.rb") + %w{spec/spec_helper.rb}
 end
