@@ -1,3 +1,16 @@
+== 1.4.0 / 2011-10-02
+
+* API changes
+  * PNG is now a full-fledged object to allow further
+    customization. See chunky_png for more details.
+  * Update chunky_png dependency to allow newest versions
+
+* Bugfixes
+  * alphanumeric mode was not working correctly
+  * numeric mode segfaulted when passed an integer
+  * Passing an invalid string now raises an ArgumentError
+    rather than segfaulting
+
 == 1.3.4 / 2011-03-08
 
 * 1 Minor enhancement

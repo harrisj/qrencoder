@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.email = ['harrisj@schizopolis.net', 'josh@joshuadavey.com']
   s.homepage = 'http://nycrb.rubyforge.org/qrencoder'
   s.authors = ['Jacob Harris', 'Joshua Davey', 'Wesley Moore']
-  s.date     = '2011-03-08'
+  s.date     = Date.today
 
   s.extensions = ["ext/qrencoder_ext/extconf.rb"]
 
