@@ -32,6 +32,13 @@ describe QREncoder do
       it { should == "A63B902F" }
     end
 
+    context "with numeric characters" do
+      let(:message) { 83913 }
+      let(:encoding_options) do
+        { :mode => :numeric }
+      end
+      it { should == "83913" }
+    end
 
     context "with a custom pixel per module size" do
       let(:message) { "bigger" }
