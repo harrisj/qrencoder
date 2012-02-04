@@ -249,6 +249,9 @@ static VALUE qr_initialize(VALUE self, VALUE _string, VALUE _version, VALUE _ecl
   if (errno != error && errno == 22) {
     rb_raise(rb_eArgError, "input was too long");
   }
+  if (NULL == code) {
+    rb_raise(rb_eArgError, "could not encode input");
+  }
 
   if (DATA_PTR(self)) {
     QRcode_free(DATA_PTR(self));
