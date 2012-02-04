@@ -48,10 +48,10 @@ pass to <tt>QREncoder#encode</tt>.
 
 == REQUIREMENTS:
 
-This gem requires you to build the C library lib <tt>libqrcode.a</tt> available
+This gem requires you to build the C library lib <tt>111qrcode.a</tt> available
 from http://megaui.net/fukuchi/works/qrencode/index.en.html.
 
-Installation is usually as simple as:
+On *nix systems, installation is usually as simple as:
 
   curl http://fukuchi.org/works/qrencode/qrencode-3.1.1.tar.gz | tar xz
   cd qrencode-3.1.1
@@ -69,6 +69,12 @@ avoided if you run the following build sequence:
   ./configure --without-tools
   make
   sudo make install
+
+== HOMEBREW:
+
+If you're on OS X, you can use homebrew to install libqrencode:
+
+  brew install qrencode
 
 == INSTALLATION:
 
