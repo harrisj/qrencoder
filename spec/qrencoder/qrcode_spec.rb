@@ -11,13 +11,6 @@ describe QREncoder::QRCode do
         subject.should == QREncoder::Fixtures::String1
       end
     end
-    context "with version 4 and 'String'" do
-      subject { QREncoder.encode("String", :version => 4).data }
-      it { should be_kind_of(Array) }
-      it "generates the correct data array" do
-        subject.should == QREncoder::Fixtures::String4
-      end
-    end
   end
 
   describe "#dup" do
