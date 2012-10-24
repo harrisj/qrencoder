@@ -99,7 +99,7 @@ be accepted without corresponding tests.
 == FEATURES/PROBLEMS:
 
 * This gem requires you to build and install an external C library
-* The QREncode lib this GEM is built around is NOT thread-safe!
+* The QREncode lib this GEM is built around is only thread-safe from version 3.2.0 onwards!
 
 == CONTRIBUTORS:
 
